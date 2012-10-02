@@ -12,16 +12,13 @@ class WisemblyAppServiceProvider implements ServiceProviderInterface
 
     public function __construct($config)
     {
-        $thisd->config = $config;
+        $this->config = $config;
     }
     public function register(Application $app)
     {
-        $app['wis_auth_token'] = $app->protect(function ($name) use ($app) {
-            $default = $app['hello.default_name'] ? $app['hello.default_name'] : '';
-            $name = $name ?: $default;
-
-            return 'Hello '.$app->escape($name);
-        });
+        $app['wis_auth_token'] = function ($app) {
+            return false;
+        };
     }
 
     public function boot(Application $app)

@@ -2,7 +2,20 @@
     "name" : "comensee/WisemblyApp",
     "description" : "Wisembly Third Part Application",
     "keywords": ["App", "silex", "Wisembly", "framework"],
-
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "twitter/bootstrap",
+                "version": "2.0.1",
+                "source": {
+                    "url": "git://github.com/twitter/bootstrap.git",
+                    "type": "git",
+                    "reference": "v2.0.1"
+                }
+            }
+        }
+    ],
 
     "require" : {
         "php"                 : ">=5.3.2",
@@ -14,11 +27,18 @@
         "symfony/config"      : "2.1.*",
         "symfony/yaml"        : "2.1.*",
         "symfony/validator"   : "2.1.*",
-        "monolog/monolog"     : "dev-master"
+        "monolog/monolog"     : "dev-master",
+        "twitter/bootstrap": "2.0.1"
+
     },
     "autoload": { 
         "psr-0": 
             {"WisemblyApp": "src"}
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "scripts": {
+        "post-update-cmd": [
+            "WisemblyApp\\Composer\\ScriptHandler::updateBootstrap"
+        ]
+    }
 }

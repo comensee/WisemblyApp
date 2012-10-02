@@ -15,19 +15,17 @@ class Security implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        $controllers = new ControllerCollection(new Route());
+        $controllers = $app['controllers_factory'];
 
         /**
-         * account
+         * security
          *
-         * GET /account
+         * GET /security
          * User account
          */
-        $controllers->get('/', function () use ($app) {
-            return $app['twig']->render('Account/home.html.twig');
-        })
-        ->bind('account')
-        ->value('security', array('ROLE_MEMBER'));
+        $controllers->get('/login', function () use ($app) {
+            return $app['twig']->render('Security/login.html.twig');
+        })->bind("security");
 
         return $controllers;
     }

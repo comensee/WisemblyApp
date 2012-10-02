@@ -33,18 +33,23 @@ $app->register(new TwigServiceProvider(), $config['twig']);
 $app->register(new WisemblyAppServiceProvider($config['wisemblyapp']));
 
 //$app['autoloader']->registerNamespace( 'WisemblyApp', __DIR__.'/../src' );
+
 $app->before(function() use ($app) {
-    if(!$app['wis_auth_token']):
-        $app->redirect('/security/login');
+    if($app['request']->getRequestUri()!= $app['url_generator']->generate('security')):
+        if(!$app['session']->get('wis_auth_token')):
+            return $app->redirect($app['url_generator']->generate('security'));
+        endif;
     endif;
 });
 
 /**
- * Error handler
+ * homepage
+ *
+ * GET /
  */
-$app->error(function (\Exception $e, $code) {
-    return new \Symfony\Component\HttpFoundation\Response($e->getMessage(), $code);
-});
+$app->get('/', function () use ($app) {
+    return $app['twig']->render('homepage.html.twig');
+})->bind('homepage');
 
 $app->mount("/security", new WisemblyApp\Controller\Security());
 $app->mount("/events", new WisemblyApp\Controller\Event());
