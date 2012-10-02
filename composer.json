@@ -13,8 +13,12 @@
         "symfony/translation" : "2.1.*",
         "symfony/config"      : "2.1.*",
         "symfony/yaml"        : "2.1.*",
-        "symfony/validator"   : "2.1.*"
+        "symfony/validator"   : "2.1.*",
+        "monolog/monolog"     : "dev-master"
     },
-
+    "autoload": { 
+        "psr-0": 
+            {"WisemblyApp": "src"}
+    },
     "minimum-stability": "dev"
 }
