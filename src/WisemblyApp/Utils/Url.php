@@ -4,7 +4,7 @@ namespace WisemblyApp\Utils;
 
 /***
  * @author Alain Bangoula
- * class Allowing Basic cURL action like POST, PUT, or GET
+ * class Allowing Basic cURL actions like POST, PUT, or GET
  * FeedBack appreciated :-)
  */
 class Url {
