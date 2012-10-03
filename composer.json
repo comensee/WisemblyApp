@@ -37,6 +37,9 @@
     },
     "minimum-stability": "dev",
     "scripts": {
+        "post-install-cmd": [
+            "WisemblyApp\\Composer\\ScriptHandler::updateBootstrap"
+        ],
         "post-update-cmd": [
             "WisemblyApp\\Composer\\ScriptHandler::updateBootstrap"
         ]
