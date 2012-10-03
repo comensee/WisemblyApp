@@ -19,13 +19,8 @@ class WisemblyAppServiceProvider implements ServiceProviderInterface
     {
         $app['wis_auth_token'] = $app->protect(function ($config) use ($app) {
             $url = new Url("http://votrequestion.com/api/3/authentication/get-token");
-            $datas = array( "username"=>$config['username'], 
-                            "secret"=>$config['secret'],
-                            "app_id" => $config['app_id'], 
-                            "hash"=>sha1($config['username'].$config['app_id'].$config['app_secret']));
-            error_log(json_encode($datas));
+            $datas = array("app_id" => $config['app_id'], "hash"=>sha1($config['app_id'].$config['app_secret']));
             $response = $url->post($datas);
-            error_log($response);
             $response = json_decode($response);
             $app['session']->set('wis_auth_token', $response->success->data->token);
         });

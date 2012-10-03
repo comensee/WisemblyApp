@@ -41,7 +41,6 @@ class Event implements ControllerProviderInterface
                 
                 $quote_url = new Url("http://votrequestion.com/api/3/event/".$keyword."/quotes");
                 $quotes = json_decode($quote_url->get(), true);
-                print_r($quotes); 
             return $app['twig']->render('Event/event.html.twig', array(
                                                                         "event"  => $event['success']['data'],
                                                                         "quotes" => $quotes['success']['data']
