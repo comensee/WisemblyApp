@@ -27,6 +27,9 @@ class Security implements ControllerProviderInterface
          * User account
          */
         $controllers->match('/login', function () use ($app) {
+            if($app['session']->get("user_auth_token")):
+                $app->redirect($app['url_generator']->generate('events'));
+            endif;
             $form = $app['form.factory']->create(new LoginType());
             $request = $app['request'];
         if ('POST' == $request->getMethod()) {

@@ -1,1 +1,9 @@
 {% extends '__base.html.twig' %}
+{%block body%}
+<h1>Events</h1>
+<ul>
+    {%for event in events%}
+        <li><a href="{{path('event',{"keyword":event.keyword})}}">{{event.title}}</a></li>
+    {%endfor%}
+</ul>
+{%endblock%}

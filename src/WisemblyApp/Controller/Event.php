@@ -28,7 +28,9 @@ class Event implements ControllerProviderInterface
          * User account
          */
         $controllers->get('/', function () use ($app) {
-            return $app['twig']->render('Event/list.html.twig');
+            $events = array();
+            $events[] = array("keyword"=> "abangoulaevent", "title"=>"Alain Bangoula Event");
+            return $app['twig']->render('Event/list.html.twig', array("events"=>$events));
         })
         ->bind('events');
 
