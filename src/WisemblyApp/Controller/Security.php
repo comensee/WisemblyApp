@@ -23,8 +23,8 @@ class Security implements ControllerProviderInterface
         /**
          * security
          *
-         * GET /security
-         * User account
+         * GET /security/login
+         * LogIn User
          */
         $controllers->match('/login', function () use ($app) {
             if($app['session']->get("user_auth_token")):
@@ -63,8 +63,8 @@ class Security implements ControllerProviderInterface
         /**
          * security
          *
-         * GET /logout
-         * User account
+         * GET /security/logout
+         * LogOut User
          */
         $controllers->get('/logout', function () use ($app) {
             $app['session']->setFlash("info", "utilisateur déconnecté");
