@@ -58,7 +58,7 @@ class Event implements ControllerProviderInterface
         })
         ->bind('event');
         
-        /*
+        /**
          * event quotes
          *
          * POST /events/{keyword}/quotes
@@ -74,7 +74,7 @@ class Event implements ControllerProviderInterface
         })
         ->bind('post_quote');
         
-        /*
+        /**
          * event quotes vote
          *
          * GET /events/{keyword}/quotes/{id}/votes
