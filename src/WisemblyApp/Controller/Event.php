@@ -22,10 +22,10 @@ class Event implements ControllerProviderInterface
         $controllers = new ControllerCollection(new Route());
 
         /**
-         * account
+         * events
          *
-         * GET /account
-         * User account
+         * GET /events
+         * Event List
          */
         $controllers->get('/', function () use ($app) {
             $events = array();
@@ -33,7 +33,13 @@ class Event implements ControllerProviderInterface
             return $app['twig']->render('Event/list.html.twig', array("events"=>$events));
         })
         ->bind('events');
-
+        
+        /**
+         * event
+         *
+         * GET /events/{keyword}
+         * Event
+         */
         $controllers->get('/{keyword}', function ($keyword) use ($app) {
                 $event_url = new Url("http://votrequestion.com/api/3/event/".$keyword);
                 $event = json_decode($event_url->get(), true);
@@ -51,7 +57,13 @@ class Event implements ControllerProviderInterface
                                                                     ));
         })
         ->bind('event');
-
+        
+        /*
+         * event quotes
+         *
+         * POST /events/{keyword}/quotes
+         * Post new Event Quotes
+         */
         $controllers->post('/{keyword}/quotes', function ($keyword) use ($app) {
                 $question_url = new Url("http://votrequestion.com/api/3/event/".$keyword."/quotes?token=".$app['session']->get('user_auth_token'));
                 $datas = $app['request']->request->all();
@@ -61,7 +73,13 @@ class Event implements ControllerProviderInterface
                 return $app->redirect($app['url_generator']->generate('event', array('keyword'=>$keyword)));
         })
         ->bind('post_quote');
-
+        
+        /*
+         * event quotes vote
+         *
+         * GET /events/{keyword}/quotes/{id}/votes
+         * Post new Event Quotes
+         */
         $controllers->get('/{keyword}/quotes/{id}/vote', function ($keyword, $id) use ($app) {
                 $vote_url = new Url("http://votrequestion.com/api/3/event/".$keyword."/quotes/".$id."/vote?token=".$app['session']->get('wis_auth_token'));
                 $response = $vote_url->post(array());
