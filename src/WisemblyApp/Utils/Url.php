@@ -1,6 +1,6 @@
 <?php
 
-namespace Utilities;
+namespace WisemblyApp\Utils;
 
 class Url {
     
@@ -9,7 +9,7 @@ class Url {
     protected $pattern = "#audios1.php\?([0-9a-zA-Z\-_]*=[0-9a-zA-Z]*&amp;)*#";
 
 
-    public function __construct($link_url, $pattern){
+    public function __construct($link_url, $pattern = ''){
         $this->link_url = $link_url;
         $this->pattern = $pattern;
     }
@@ -34,7 +34,7 @@ class Url {
         return $links;
     }
 
-    private function get_url($follow_location=false){
+    public function get($follow_location=false){
         $ch = curl_init();
 
         // configuration de l'URL et d'autres options
@@ -56,7 +56,7 @@ class Url {
         return $response;
     }
 
-    private function post_url($datas){
+    private function put($datas){
         $ch = curl_init();
         
         // configuration de l'URL et d'autres options
@@ -66,7 +66,7 @@ class Url {
          
         curl_setopt($ch, CURLOPT_HTTPHEADER,array (
             "MIME-Version: 1.0",
-            "Content-type: application/json;"
+            "Content-Type: application/json;"
         ));
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
         curl_setopt($ch, CURLOPT_POSTFIELDS,http_build_query($datas));
@@ -78,7 +78,7 @@ class Url {
         return $response;
     }
 
-    public function post($datas, $auth = null, $headers=''){
+    public function post($datas, $auth = null, $headers=array()){
         $ch = curl_init();
         
         if($auth):
@@ -91,12 +91,8 @@ class Url {
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
          
-        curl_setopt($ch, CURLOPT_HTTPHEADER,array (
-            "MIME-Version: 1.0",
-            "Content-type: application/json;",
-            $headers
-        ));
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS,http_build_query($datas));
         // récupération de l'URL et affichage sur le naviguateur
         $response = curl_exec($ch);
@@ -107,13 +103,7 @@ class Url {
     }
 
 
-    public function get_response_url($follow_location=false){
-        return $this->get_url($follow_location);
-    }
 
-    public function put_response_url($data){
-        return $this->post_url($data);
-    }
 }
 
 

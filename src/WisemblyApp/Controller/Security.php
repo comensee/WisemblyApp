@@ -25,8 +25,18 @@ class Security implements ControllerProviderInterface
          */
         $controllers->get('/login', function () use ($app) {
             return $app['twig']->render('Security/login.html.twig');
-        })->bind("security");
+        })->bind("security_login");
 
+        /**
+         * security
+         *
+         * GET /logout
+         * User account
+         */
+        $controllers->get('/logout', function () use ($app) {
+            $app['session']->get('wis_auth_token')->set(null);
+            return $app->redirect($app['url_generator']->generate('security'));
+        })->bind("security_logout");
         return $controllers;
     }
 }

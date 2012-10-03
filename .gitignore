@@ -8,5 +8,9 @@ vendor/*
 web/uploads/*
 web/bundles/*
 
+*.swn
+*.swp
+*.swo
+
 # Configuration files
 app/config/parameters.ini

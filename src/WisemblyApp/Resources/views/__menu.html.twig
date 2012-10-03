@@ -1,0 +1,6 @@
+{%if app.session.get('user_auth_token')%}
+<ul class="nav">
+    <li><a href="/events">Events</a></li>
+    <li><a href="/security/logout">Déconnexion</a></li>
+</ul>
+{%endif%}

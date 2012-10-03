@@ -1,0 +1,14 @@
+{% extends '__base.html.twig' %}
+
+{%block body%}
+<h1>{{event['title']}}</h1>
+<div>
+    {%for idx, quote in quotes%}
+    <div> 
+        <h3>{{quote['quote']}}</h3>
+        le {{quote['created_at']['date']|date('d/m/y')}} à  {{quote['created_at']['date']|date('H:i')}}
+        Votes : {{quote['votes_count']}} <a href="{{path('post_vote', {'keyword':event['keyword'],'id':quote['id']})}}">Voter</a>
+    </div>
+    {%endfor%}
+</div>
+{%endblock%}

@@ -35,9 +35,9 @@ $app->register(new WisemblyAppServiceProvider($config['wisemblyapp']));
 //$app['autoloader']->registerNamespace( 'WisemblyApp', __DIR__.'/../src' );
 
 $app->before(function() use ($app) {
-    if($app['request']->getRequestUri()!= $app['url_generator']->generate('security')):
+    if(preg_match("/security/", $app['request']->getRequestUri()) > 1):
         if(!$app['session']->get('wis_auth_token')):
-            return $app->redirect($app['url_generator']->generate('security'));
+            return $app->redirect($app['url_generator']->generate('security_login'));
         endif;
     endif;
 });
@@ -48,7 +48,7 @@ $app->before(function() use ($app) {
  * GET /
  */
 $app->get('/', function () use ($app) {
-    return $app['twig']->render('homepage.html.twig');
+    return $app->redirect($app['url_generator']->generate('events'));
 })->bind('homepage');
 
 $app->mount("/security", new WisemblyApp\Controller\Security());
