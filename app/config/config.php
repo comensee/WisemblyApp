@@ -12,8 +12,6 @@ $config = array();
 $config['wisemblyapp'] = array(
                             'app_id'        =>  'alainbangoula',
                             'app_secret'    =>  'wisembly',
-                            "username"      =>  'comensee',
-                            "secret"        =>  "wis3mbly",
 );
 
 /**
