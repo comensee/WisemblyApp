@@ -11,4 +11,11 @@
     </div>
     {%endfor%}
 </div>
+{%if app.session.get('user_auth_token')%}
+<form action="/events/{{event['keyword']}}/quotes" method="post">
+    {{form_label(form.content, 'Posez votre question :')}} {{form_widget(form.content)}} <br/>
+    {{form_rest(form)}}
+    <input type="submit" name="submit" />
+</form>
+{%endif%}
 {%endblock%}

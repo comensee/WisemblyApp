@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Form\Type;
+namespace WisemblyApp\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException; 
 
 use WisemblyApp\Utils\Url;
-
+use WisemblyApp\Form\Type\QuoteType;
 /**
  * Event controller provider
  */
@@ -41,16 +41,20 @@ class Event implements ControllerProviderInterface
                 
                 $quote_url = new Url("http://votrequestion.com/api/3/event/".$keyword."/quotes");
                 $quotes = json_decode($quote_url->get(), true);
+                $form = $app['form.factory']->create(new QuoteType());
             return $app['twig']->render('Event/event.html.twig', array(
                                                                         "event"  => $event['success']['data'],
-                                                                        "quotes" => $quotes['success']['data']
+                                                                        "quotes" => $quotes['success']['data'],
+                                                                        "form"   => $form->createView()
                                                                     ));
         })
         ->bind('event');
 
         $controllers->post('/{keyword}/quotes', function ($keyword) use ($app) {
-                $question_url = new Url("http://votrequestion.com/api/3/event/".$keyword."?token=".$app['session']->get('wis_auth_token'));
-                $response = $question_url->post(array());
+                $question_url = new Url("http://votrequestion.com/api/3/event/".$keyword."/quotes?token=".$app['session']->get('user_auth_token'));
+                $datas = $app['request']->request->all();
+                error_log(print_r($datas));
+                $response = $question_url->post(array("quote"=>$datas['quote']['content']));
                 error_log($response);
                 return $app->redirect($app['url_generator']->generate('event', array('keyword'=>$keyword)));
         })

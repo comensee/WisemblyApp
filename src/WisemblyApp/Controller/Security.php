@@ -8,6 +8,9 @@ use Silex\ControllerProviderInterface,
     Silex\Application;
 use Symfony\Component\Form\FormError;
 
+use WisemblyApp\Utils\Url;
+use WisemblyApp\Form\Type\LoginType;
+
 /**
  * Security controller
  */
@@ -23,9 +26,36 @@ class Security implements ControllerProviderInterface
          * GET /security
          * User account
          */
-        $controllers->get('/login', function () use ($app) {
-            return $app['twig']->render('Security/login.html.twig');
-        })->bind("security_login");
+        $controllers->match('/login', function () use ($app) {
+            $form = $app['form.factory']->create(new LoginType());
+            $request = $app['request'];
+        if ('POST' == $request->getMethod()) {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $url = new Url("http://votrequestion.com/api/3/authentication/get-token");
+                $response = $url->post(array("username"=>$data['username'], 
+                                                "secret"=>$data["password"], 
+                                                "app_id"=>$app['wisemblyapp']['config']['app_id'],
+                                                "hash"=>sha1($data['username'].$app['wisemblyapp']['config']['app_id'].$app['wisemblyapp']['config']['app_secret'])));
+                //error_log($response);
+                $response = json_decode($response, true);
+                //error_log(key($response));
+                if(key($response)=="error"):
+                    $app['session']->setFlash("error", "utilisateur non reconnu");
+                    return $app['twig']->render('Security/login.html.twig', array("form"=>$form->createView()));
+                endif;
+                $app['session']->setFlash("success", "utilisateur connecté");
+                $app['session']->set("user_auth_token", $response['success']['data']['token']);
+                return $app->redirect($app['url_generator']->generate("events"));
+            
+            }
+        }
+
+            return $app['twig']->render('Security/login.html.twig', array("form"=>$form->createView()));
+        })->bind("security_login")
+        ->method('GET|POST');
 
         /**
          * security
@@ -34,8 +64,9 @@ class Security implements ControllerProviderInterface
          * User account
          */
         $controllers->get('/logout', function () use ($app) {
-            $app['session']->get('wis_auth_token')->set(null);
-            return $app->redirect($app['url_generator']->generate('security'));
+            $app['session']->setFlash("info", "utilisateur déconnecté");
+            $app['session']->set('user_auth_token', null);
+            return $app->redirect($app['url_generator']->generate('security_login'));
         })->bind("security_logout");
         return $controllers;
     }

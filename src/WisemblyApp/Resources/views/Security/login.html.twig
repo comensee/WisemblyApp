@@ -1,1 +1,11 @@
 {% extends '__base.html.twig' %}
+
+{%block body%}
+<h1>Connexion : </h1>
+<form method="post" action=""i>
+{{form_label(form.username, "Login : ")}} {{form_widget(form.username)}} <br/>
+{{form_label(form.password, "Mot de Passe : ")}} {{form_widget(form.password)}} <br/>
+{{form_rest(form)}}
+<input type="submit" value="Connexion">
+</form>
+{%endblock%}

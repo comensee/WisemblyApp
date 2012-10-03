@@ -49,6 +49,9 @@
     </div>
 
     <div class="container">
+        {% block flash %}
+            {% include '_flash.html.twig' %}
+        {% endblock %}
 
         {% block body %}{% endblock %}
 

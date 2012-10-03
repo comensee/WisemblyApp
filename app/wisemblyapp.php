@@ -26,6 +26,9 @@ $app->register(new FormServiceProvider());
 $app->register(new SessionServiceProvider(), $config['session']);
 $app->register(new MonologServiceProvider(), $config['monolog']);
 $app->register(new TwigServiceProvider(), $config['twig']);
+$app->register(new Silex\Provider\TranslationServiceProvider(), array(
+    'translator.messages' => array(),
+));
 
 /**
  * Wisembly
